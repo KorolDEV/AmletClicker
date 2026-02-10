@@ -1,0 +1,199 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clicker Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div>
+        <h1 data-i18n="title">Clicker Shop</h1>
+        <p class="subtitle" data-i18n="subtitle">Click to earn coins. Buy upgrades to earn faster.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="label" data-i18n="label_coins">Coins</div>
+          <div id="coins" class="value">0</div>
+        </div>
+        <div class="stat">
+          <div class="label" data-i18n="label_per_click">Per Click</div>
+          <div id="perClick" class="value">1</div>
+        </div>
+        <div class="stat">
+          <div class="label" data-i18n="label_per_second">Per Second</div>
+          <div id="perSecond" class="value">0</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <nav class="tabs" role="tablist">
+        <button class="tab is-active" role="tab" aria-selected="true" data-tab="play" data-i18n="tab_play">Play</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="shop" data-i18n="tab_shop">Shop</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="settings" data-i18n="tab_settings">Settings</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="stats" data-i18n="tab_stats">Stats</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="inventory" data-i18n="tab_inventory">Inventory</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="info" data-i18n="tab_info">Info</button>
+      </nav>
+
+      <section class="tab-panel is-active" id="tab-play" role="tabpanel">
+        <div class="click-area">
+          <button id="clickBtn" class="click-btn">
+            <span data-i18n="click_button">CLICK</span>
+          </button>
+          <div class="click-hint" data-i18n="click_hint">Tap or click the button</div>
+          <button id="goldenBtn" class="golden-btn" aria-hidden="true">+</button>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-shop" role="tabpanel">
+        <div class="shop">
+          <h2 data-i18n="shop_title">Shop</h2>
+          <div class="shop-controls">
+            <input id="shopSearch" class="shop-search" type="text" data-i18n-placeholder="shop_search" placeholder="Search" />
+            <select id="shopSort" class="shop-sort">
+              <option value="default" data-i18n="shop_sort_default">Default</option>
+              <option value="cost_asc" data-i18n="shop_sort_cost_asc">Cost ↑</option>
+              <option value="cost_desc" data-i18n="shop_sort_cost_desc">Cost ↓</option>
+              <option value="owned" data-i18n="shop_sort_owned">Owned</option>
+            </select>
+            <select id="buyMode" class="shop-sort">
+              <option value="1" data-i18n="buy_mode_1">Buy x1</option>
+              <option value="10" data-i18n="buy_mode_10">Buy x10</option>
+              <option value="max" data-i18n="buy_mode_max">Buy Max</option>
+            </select>
+          </div>
+          <div class="shop-tabs" role="tablist">
+            <button class="shop-tab is-active" role="tab" aria-selected="true" data-shop-tab="upgrades" data-i18n="shop_tab_upgrades">Upgrades</button>
+            <button class="shop-tab" role="tab" aria-selected="false" data-shop-tab="skins" data-i18n="shop_tab_skins">Skins</button>
+            <button class="shop-tab" role="tab" aria-selected="false" data-shop-tab="cases" data-i18n="shop_tab_cases">Cases</button>
+          </div>
+          <div class="shop-panel is-active" id="shop-upgrades" role="tabpanel">
+            <div id="shopList" class="shop-list"></div>
+          </div>
+          <div class="shop-panel" id="shop-skins" role="tabpanel">
+            <div id="skinList" class="shop-list"></div>
+          </div>
+          <div class="shop-panel" id="shop-cases" role="tabpanel">
+            <div id="caseList" class="shop-list"></div>
+            <div id="caseAnimation" class="case-animation" aria-live="polite" aria-atomic="true"></div>
+            <div id="caseMessage" class="case-message" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-settings" role="tabpanel">
+        <div class="settings">
+          <h2 data-i18n="settings_title">Settings</h2>
+          <div class="settings-list">
+            <label class="setting">
+              <span data-i18n="settings_language">Language</span>
+              <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+              </select>
+            </label>
+            <label class="setting">
+              <span data-i18n="settings_short_numbers">Short numbers</span>
+              <input id="shortNumbers" type="checkbox" />
+            </label>
+            <label class="setting">
+              <span data-i18n="settings_reduce_motion">Reduce motion</span>
+              <input id="reduceMotion" type="checkbox" />
+            </label>
+            <label class="setting">
+              <span data-i18n="settings_confirm_reset">Confirm reset</span>
+              <input id="confirmReset" type="checkbox" />
+            </label>
+          </div>
+          <div class="settings-tools">
+            <div class="tool-title" data-i18n="settings_save">Save Tools</div>
+            <textarea id="saveText" class="save-text" rows="3" placeholder="Save code"></textarea>
+            <div class="tool-actions">
+              <button id="exportBtn" class="reset" data-i18n="export_btn">Export</button>
+              <button id="importBtn" class="reset" data-i18n="import_btn">Import</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-stats" role="tabpanel">
+        <div class="stats-panel">
+          <h2 data-i18n="stats_title">Statistics</h2>
+          <div class="stats-list">
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_time">Time Played</div>
+              <div id="statTime" class="value">0:00</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_total">Total Earned</div>
+              <div id="statTotal" class="value">0</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_current">Current Coins</div>
+              <div id="statCurrent" class="value">0</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_clicks">Total Clicks</div>
+              <div id="statClicks" class="value">0</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_upgrades">Upgrades Bought</div>
+              <div id="statUpgrades" class="value">0</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_cases">Cases Opened</div>
+              <div id="statCases" class="value">0</div>
+            </div>
+            <div class="stats-item">
+              <div class="label" data-i18n="stats_best_streak">Best Streak</div>
+              <div id="statBestStreak" class="value">0</div>
+            </div>
+          </div>
+          <div class="achievements">
+            <div class="tool-title" data-i18n="achievements_title">Achievements</div>
+            <div id="achievementList" class="achievement-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-inventory" role="tabpanel">
+        <div class="inventory-panel">
+          <h2 data-i18n="inventory_title">Inventory</h2>
+          <div id="inventoryList" class="inventory-list"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-info" role="tabpanel">
+        <div class="inventory-panel">
+          <h2 data-i18n="info_title">Info</h2>
+          <div class="inventory-list">
+            <div class="inventory-item">
+              <div>
+                <div data-i18n="info_tg">TГК:</div>
+                <div class="meta"><a href="https://t.me/mishkamayorov" target="_blank" rel="noopener noreferrer">https://t.me/mishkamayorov</a></div>
+              </div>
+            </div>
+            <div class="inventory-item">
+              <div>
+                <div data-i18n="info_tt">ТТ:</div>
+                <div class="meta"><a href="https://tiktok.com/@luboznat0" target="_blank" rel="noopener noreferrer">https://tiktok.com/@luboznat0</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <button id="resetBtn" class="reset" data-i18n="reset_button">Reset</button>
+      <div class="tip" data-i18n="tip_text">Progress is stored locally in your browser.</div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
