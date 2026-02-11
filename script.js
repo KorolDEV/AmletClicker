@@ -1360,6 +1360,7 @@ const i18n = {
     label_per_second: "Per Second",
     click_button: "CLICK",
     click_hint: "Tap or click the button",
+    loading_text: "Loading...",
     shop_title: "Shop",
     settings_title: "Settings",
     settings_language: "Language",
@@ -1534,6 +1535,7 @@ const i18n = {
     label_per_second: "В секунду",
     click_button: "КЛИК",
     click_hint: "Нажми кнопку",
+    loading_text: "Загрузка...",
     shop_title: "Магазин",
     settings_title: "Настройки",
     settings_language: "Язык",
@@ -1823,6 +1825,7 @@ const i18n = {
 };
 
 const dom = {
+  preloader: document.getElementById("preloader"),
   coins: document.getElementById("coins"),
   perClick: document.getElementById("perClick"),
   perSecond: document.getElementById("perSecond"),
@@ -2668,6 +2671,11 @@ function bindShopTabs() {
   });
 }
 
+function hidePreloader() {
+  if (!dom.preloader) return;
+  dom.preloader.classList.add("is-hidden");
+}
+
 function bindShopControls() {
   if (dom.buyMode) dom.buyMode.value = state.settings.buyMode;
   if (dom.shopSort) dom.shopSort.value = state.settings.shopSort;
@@ -2711,6 +2719,7 @@ function init() {
   });
   scheduleGolden();
   setInterval(tick, 100);
+  setTimeout(hidePreloader, 250);
 }
 
 init();
