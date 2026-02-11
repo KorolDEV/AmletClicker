@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Clicker Shop</title>
+  <title>Amlet Clicker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -41,6 +41,7 @@
         <button class="tab" role="tab" aria-selected="false" data-tab="shop" data-i18n="tab_shop">Shop</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="settings" data-i18n="tab_settings">Settings</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="stats" data-i18n="tab_stats">Stats</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="prestige" data-i18n="tab_prestige">Prestige</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="inventory" data-i18n="tab_inventory">Inventory</button>
         <button class="tab" role="tab" aria-selected="false" data-tab="info" data-i18n="tab_info">Info</button>
       </nav>
@@ -62,8 +63,8 @@
             <input id="shopSearch" class="shop-search" type="text" data-i18n-placeholder="shop_search" placeholder="Search" />
             <select id="shopSort" class="shop-sort">
               <option value="default" data-i18n="shop_sort_default">Default</option>
-              <option value="cost_asc" data-i18n="shop_sort_cost_asc">Cost ↑</option>
-              <option value="cost_desc" data-i18n="shop_sort_cost_desc">Cost ↓</option>
+              <option value="cost_asc" data-i18n="shop_sort_cost_asc">Cost ^</option>
+              <option value="cost_desc" data-i18n="shop_sort_cost_desc">Cost v</option>
               <option value="owned" data-i18n="shop_sort_owned">Owned</option>
             </select>
             <select id="buyMode" class="shop-sort">
@@ -76,6 +77,7 @@
             <button class="shop-tab is-active" role="tab" aria-selected="true" data-shop-tab="upgrades" data-i18n="shop_tab_upgrades">Upgrades</button>
             <button class="shop-tab" role="tab" aria-selected="false" data-shop-tab="skins" data-i18n="shop_tab_skins">Skins</button>
             <button class="shop-tab" role="tab" aria-selected="false" data-shop-tab="cases" data-i18n="shop_tab_cases">Cases</button>
+            <button class="shop-tab" role="tab" aria-selected="false" data-shop-tab="music" data-i18n="shop_tab_music">Music</button>
           </div>
           <div class="shop-panel is-active" id="shop-upgrades" role="tabpanel">
             <div id="shopList" class="shop-list"></div>
@@ -87,6 +89,9 @@
             <div id="caseList" class="shop-list"></div>
             <div id="caseAnimation" class="case-animation" aria-live="polite" aria-atomic="true"></div>
             <div id="caseMessage" class="case-message" aria-live="polite"></div>
+          </div>
+          <div class="shop-panel" id="shop-music" role="tabpanel">
+            <div id="musicList" class="shop-list"></div>
           </div>
         </div>
       </section>
@@ -100,6 +105,13 @@
               <select id="languageSelect">
                 <option value="en">English</option>
                 <option value="ru">Русский</option>
+              </select>
+            </label>
+            <label class="setting">
+              <span data-i18n="settings_interface">Interface</span>
+              <select id="uiStyleSelect">
+                <option value="classic" data-i18n="settings_interface_classic">Classic</option>
+                <option value="modern" data-i18n="settings_interface_modern">Modern</option>
               </select>
             </label>
             <label class="setting">
@@ -159,16 +171,55 @@
               <div id="statBestStreak" class="value">0</div>
             </div>
           </div>
-          <div class="achievements">
-            <div class="tool-title" data-i18n="achievements_title">Achievements</div>
-            <div id="achievementList" class="achievement-list"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-prestige" role="tabpanel">
+        <div class="progress-panel">
+          <h2 data-i18n="progress_prestige_title">Prestige</h2>
+          <div class="progress-grid">
+            <div class="progress-card">
+              <div id="prestigeLevelInfo" class="shop-meta">-</div>
+              <div id="prestigeBonusInfo" class="shop-meta">-</div>
+              <div id="prestigeCritInfo" class="shop-meta">-</div>
+              <div id="prestigeCaseInfo" class="shop-meta">-</div>
+              <div id="prestigeCostInfo" class="shop-meta">-</div>
+              <button id="prestigeBtn" class="reset" data-i18n="progress_prestige_btn">Prestige</button>
+            </div>
           </div>
+          <div id="progressMessage" class="case-message" aria-live="polite"></div>
         </div>
       </section>
 
       <section class="tab-panel" id="tab-inventory" role="tabpanel">
         <div class="inventory-panel">
           <h2 data-i18n="inventory_title">Inventory</h2>
+          <div class="inventory-summary">
+            <div class="inventory-summary-item">
+              <div class="label" data-i18n="inventory_themes_count">Themes</div>
+              <div id="invThemesCount" class="value">0</div>
+            </div>
+            <div class="inventory-summary-item">
+              <div class="label" data-i18n="inventory_music_count">Music</div>
+              <div id="invMusicCount" class="value">0</div>
+            </div>
+            <div class="inventory-summary-item">
+              <div class="label" data-i18n="inventory_equipped">Equipped Theme</div>
+              <div id="invEquippedTheme" class="value">-</div>
+            </div>
+            <div class="inventory-summary-item">
+              <div class="label" data-i18n="inventory_playing">Playing Music</div>
+              <div id="invPlayingMusic" class="value">-</div>
+            </div>
+          </div>
+          <div class="inventory-controls">
+            <input id="inventorySearch" class="shop-search" type="text" data-i18n-placeholder="inventory_search" placeholder="Search inventory" />
+            <div class="shop-tabs inventory-tabs" role="tablist">
+              <button class="shop-tab is-active" data-inv-tab="all" data-i18n="inventory_tab_all">All</button>
+              <button class="shop-tab" data-inv-tab="themes" data-i18n="inventory_tab_themes">Themes</button>
+              <button class="shop-tab" data-inv-tab="music" data-i18n="inventory_tab_music">Music</button>
+            </div>
+          </div>
           <div id="inventoryList" class="inventory-list"></div>
         </div>
       </section>
@@ -203,3 +254,7 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+
+
+

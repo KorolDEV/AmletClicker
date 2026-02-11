@@ -4,8 +4,11 @@
   perSecond: 0,
   settings: {
     language: "en",
+    uiStyle: "classic",
+    inventoryTab: "all",
     shortNumbers: false,
     skin: "classic",
+    music: "none",
     reduceMotion: false,
     confirmReset: true,
     buyMode: "1",
@@ -28,6 +31,19 @@
   golden: {
     active: false,
     timeoutId: null,
+  },
+  gameplay: {
+    noCritClicks: 0,
+    momentum: 0,
+    lastSessionAt: Date.now(),
+    surge: {
+      activeUntil: 0,
+      nextAt: Date.now() + 60000,
+      wasActive: false,
+    },
+  },
+  progress: {
+    prestigeLevel: 0,
   },
   inventory: [],
   skins: [
@@ -416,6 +432,32 @@
       descKey: "case_exclusive_desc",
       cost: 500,
       skins: ["nebula", "royal", "toxic", "obsidian", "spectrum", "arcade", "goldrush", "holo", "inferno", "aether"],
+    },
+  ],
+  musicTracks: [
+    {
+      id: "digital_dreams",
+      nameKey: "music_digital_name",
+      descKey: "music_digital_desc",
+      cost: 1000,
+      path: "Sounds/digital-dreams_89467.mp3",
+      owned: false,
+    },
+    {
+      id: "echoes_of_joy",
+      nameKey: "music_echoes_name",
+      descKey: "music_echoes_desc",
+      cost: 850,
+      path: "Sounds/echoes-of-joy_89484.mp3",
+      owned: false,
+    },
+    {
+      id: "euphoric_ascent",
+      nameKey: "music_euphoric_name",
+      descKey: "music_euphoric_desc",
+      cost: 1240,
+      path: "Sounds/euphoric-ascent_89538.mp3",
+      owned: false,
     },
   ],
   upgrades: [
@@ -1353,7 +1395,7 @@
 
 const i18n = {
   en: {
-    title: "Clicker Shop",
+    title: "Amlet Clicker",
     subtitle: "Click to earn coins. Buy upgrades to earn faster.",
     label_coins: "Coins",
     label_per_click: "Per Click",
@@ -1364,11 +1406,15 @@ const i18n = {
     shop_title: "Shop",
     settings_title: "Settings",
     settings_language: "Language",
+    settings_interface: "Interface",
+    settings_interface_classic: "Classic",
+    settings_interface_modern: "Modern",
     settings_short_numbers: "Short numbers",
     tab_play: "Play",
     tab_shop: "Shop",
     tab_settings: "Settings",
     tab_stats: "Stats",
+    tab_prestige: "Prestige",
     tab_inventory: "Inventory",
     tab_info: "Info",
     cat_multipliers: "Multipliers",
@@ -1377,6 +1423,7 @@ const i18n = {
     shop_tab_upgrades: "Upgrades",
     shop_tab_skins: "Themes",
     shop_tab_cases: "Cases",
+    shop_tab_music: "Music",
     shop_search: "Search items",
     shop_sort_default: "Default",
     shop_sort_cost_asc: "Cost ↑",
@@ -1493,9 +1540,30 @@ const i18n = {
     case_all_owned: "All exclusive themes already owned.",
     case_nothing: "Nothing",
     inventory_title: "Inventory",
+    inventory_tab_all: "All",
+    inventory_tab_themes: "Themes",
+    inventory_tab_music: "Music",
+    inventory_search: "Search inventory",
+    inventory_themes_count: "Themes",
+    inventory_music_count: "Music",
+    inventory_equipped: "Equipped Theme",
+    inventory_playing: "Playing Music",
+    inventory_none: "None",
+    inventory_empty_filtered: "Nothing found for current filter.",
+    inventory_music_title: "Music",
     inventory_empty: "Inventory is empty.",
     inventory_coin: "Coins",
     inventory_skin: "Theme",
+    inventory_music_empty: "No music purchased yet.",
+    music_play: "Play",
+    music_playing: "Playing",
+    music_stop: "Stop",
+    music_digital_name: "Digital Dreams",
+    music_digital_desc: "Background music",
+    music_echoes_name: "Echoes of Joy",
+    music_echoes_desc: "Background music",
+    music_euphoric_name: "Euphoric Ascent",
+    music_euphoric_desc: "Background music",
     info_title: "Info",
     info_tg: "TGK:",
     info_tt: "TT:",
@@ -1505,6 +1573,18 @@ const i18n = {
     export_btn: "Export",
     import_btn: "Import",
     invalid_save: "Invalid save code",
+    offline_earned: "Offline earned: +{amount}",
+    surge_started: "Surge started: income x1.5",
+    surge_ended: "Surge ended",
+    progress_prestige_title: "Prestige",
+    progress_prestige_btn: "Prestige Reset",
+    progress_prestige_level: "Prestige level: {level}",
+    progress_prestige_bonus: "Global bonus: x{mult}",
+    progress_prestige_crit: "Bonus crit chance: +{value}",
+    progress_prestige_case: "Case discount: {value}",
+    progress_prestige_cost: "Cost: {cost} coins",
+    progress_prestige_not_enough: "Not enough coins for prestige",
+    progress_prestige_done: "Prestige complete. New level: {level}",
     stats_clicks: "Total Clicks",
     stats_upgrades: "Upgrades Bought",
     stats_cases: "Cases Opened",
@@ -1528,7 +1608,7 @@ const i18n = {
     ach_upgrade_20_desc: "Buy 20 upgrades",
   },
   ru: {
-    title: "Кликер-магазин",
+    title: "Amlet Clicker",
     subtitle: "Кликай, чтобы получать монеты. Покупай улучшения, чтобы зарабатывать быстрее.",
     label_coins: "Монеты",
     label_per_click: "За клик",
@@ -1539,11 +1619,15 @@ const i18n = {
     shop_title: "Магазин",
     settings_title: "Настройки",
     settings_language: "Язык",
+    settings_interface: "Интерфейс",
+    settings_interface_classic: "Старый",
+    settings_interface_modern: "Новый",
     settings_short_numbers: "Короткие числа",
     tab_play: "Игра",
     tab_shop: "Магазин",
     tab_settings: "Настройки",
     tab_stats: "Статистика",
+    tab_prestige: "Престиж",
     tab_inventory: "Инвентарь",
     tab_info: "Инфо",
     cat_multipliers: "Множители",
@@ -1552,6 +1636,7 @@ const i18n = {
     shop_tab_upgrades: "Улучшения",
     shop_tab_skins: "Темы",
     shop_tab_cases: "Кейсы",
+    shop_tab_music: "Музыка",
     shop_search: "Поиск",
     shop_sort_default: "По умолчанию",
     shop_sort_cost_asc: "Цена ↑",
@@ -1788,9 +1873,30 @@ const i18n = {
     case_all_owned: "Все эксклюзивные темы уже открыты.",
     case_nothing: "Ничего",
     inventory_title: "Инвентарь",
+    inventory_tab_all: "Все",
+    inventory_tab_themes: "Темы",
+    inventory_tab_music: "Музыка",
+    inventory_search: "Поиск по инвентарю",
+    inventory_themes_count: "Темы",
+    inventory_music_count: "Музыка",
+    inventory_equipped: "Выбранная тема",
+    inventory_playing: "Играет музыка",
+    inventory_none: "Нет",
+    inventory_empty_filtered: "По текущему фильтру ничего нет.",
+    inventory_music_title: "Музыка",
     inventory_empty: "Инвентарь пуст.",
     inventory_coin: "Монеты",
     inventory_skin: "Тема",
+    inventory_music_empty: "Музыка ещё не куплена.",
+    music_play: "Включить",
+    music_playing: "Играет",
+    music_stop: "Стоп",
+    music_digital_name: "Digital Dreams",
+    music_digital_desc: "Фоновая музыка",
+    music_echoes_name: "Echoes of Joy",
+    music_echoes_desc: "Фоновая музыка",
+    music_euphoric_name: "Euphoric Ascent",
+    music_euphoric_desc: "Фоновая музыка",
     info_title: "Информация",
     info_tg: "ТГК:",
     info_tt: "ТТ:",
@@ -1800,6 +1906,18 @@ const i18n = {
     export_btn: "Экспорт",
     import_btn: "Импорт",
     invalid_save: "Неверный код сохранения",
+    offline_earned: "Оффлайн доход: +{amount}",
+    surge_started: "Рывок начался: доход x1.5",
+    surge_ended: "Рывок завершен",
+    progress_prestige_title: "Престиж",
+    progress_prestige_btn: "Сброс престижа",
+    progress_prestige_level: "Уровень престижа: {level}",
+    progress_prestige_bonus: "Глобальный бонус: x{mult}",
+    progress_prestige_crit: "Бонус к шансу крита: +{value}",
+    progress_prestige_case: "Скидка на кейсы: {value}",
+    progress_prestige_cost: "Цена: {cost} монет",
+    progress_prestige_not_enough: "Недостаточно монет для престижа",
+    progress_prestige_done: "Престиж выполнен. Новый уровень: {level}",
     stats_clicks: "Всего кликов",
     stats_upgrades: "Куплено улучшений",
     stats_cases: "Открыто кейсов",
@@ -1833,11 +1951,13 @@ const dom = {
   goldenBtn: document.getElementById("goldenBtn"),
   shopList: document.getElementById("shopList"),
   skinList: document.getElementById("skinList"),
+  musicList: document.getElementById("musicList"),
   caseList: document.getElementById("caseList"),
   caseMessage: document.getElementById("caseMessage"),
   caseAnimation: document.getElementById("caseAnimation"),
   resetBtn: document.getElementById("resetBtn"),
   languageSelect: document.getElementById("languageSelect"),
+  uiStyleSelect: document.getElementById("uiStyleSelect"),
   shortNumbers: document.getElementById("shortNumbers"),
   reduceMotion: document.getElementById("reduceMotion"),
   confirmReset: document.getElementById("confirmReset"),
@@ -1858,13 +1978,55 @@ const dom = {
   statUpgrades: document.getElementById("statUpgrades"),
   statCases: document.getElementById("statCases"),
   statBestStreak: document.getElementById("statBestStreak"),
+  prestigeLevelInfo: document.getElementById("prestigeLevelInfo"),
+  prestigeBonusInfo: document.getElementById("prestigeBonusInfo"),
+  prestigeCritInfo: document.getElementById("prestigeCritInfo"),
+  prestigeCaseInfo: document.getElementById("prestigeCaseInfo"),
+  prestigeCostInfo: document.getElementById("prestigeCostInfo"),
+  prestigeBtn: document.getElementById("prestigeBtn"),
+  progressMessage: document.getElementById("progressMessage"),
+  inventorySearch: document.getElementById("inventorySearch"),
+  inventoryTabs: Array.from(document.querySelectorAll("[data-inv-tab]")),
+  invThemesCount: document.getElementById("invThemesCount"),
+  invMusicCount: document.getElementById("invMusicCount"),
+  invEquippedTheme: document.getElementById("invEquippedTheme"),
+  invPlayingMusic: document.getElementById("invPlayingMusic"),
   inventoryList: document.getElementById("inventoryList"),
-  achievementList: document.getElementById("achievementList"),
 };
 
-const CRIT_CHANCE = 0.06;
+const CRIT_CHANCE_BASE = 0.06;
+const CRIT_CHANCE_PITY_STEP = 0.006;
+const CRIT_CHANCE_MAX = 0.3;
 const CRIT_MULT = 2;
 const STREAK_WINDOW_MS = 1500;
+const MOMENTUM_GAIN = 0.06;
+const MOMENTUM_DECAY_PER_SEC = 0.08;
+const MOMENTUM_BONUS_MAX = 0.5;
+const OFFLINE_EARN_CAP_MS = 6 * 60 * 60 * 1000;
+const OFFLINE_EARN_CAP_COINS = 1000;
+const OFFLINE_EARN_RATE = 0.4;
+const SURGE_MULT = 1.5;
+const SURGE_DURATION_MS = 20000;
+const SURGE_INTERVAL_MIN_MS = 90000;
+const SURGE_INTERVAL_VAR_MS = 60000;
+const PRESTIGE_BASE_COST = 200000;
+const PRESTIGE_COST_GROWTH = 1.9;
+const PRESTIGE_BONUS_PER_LEVEL = 0.18;
+const PRESTIGE_CRIT_BONUS_PER_LEVEL = 0.012;
+const PRESTIGE_CRIT_BONUS_MAX = 0.25;
+const PRESTIGE_CASE_DISCOUNT_PER_LEVEL = 0.03;
+const PRESTIGE_CASE_DISCOUNT_MAX = 0.6;
+const clickSound = new Audio("Sounds/click.mp3");
+clickSound.preload = "auto";
+const musicAudio = new Audio();
+musicAudio.loop = true;
+musicAudio.volume = 0.45;
+
+function playClickSound() {
+  const s = clickSound.cloneNode();
+  s.volume = 0.45;
+  s.play().catch(() => {});
+}
 
 function t(key, params = {}) {
   const lang = state.settings.language in i18n ? state.settings.language : "en";
@@ -1935,6 +2097,109 @@ function getBuyMode() {
   return dom.buyMode ? dom.buyMode.value : state.settings.buyMode;
 }
 
+function getMasteryMultiplier() {
+  const tiers = Math.floor(state.stats.upgradesBought / 25);
+  return 1 + tiers * 0.02;
+}
+
+function getSurgeMultiplier(now = Date.now()) {
+  return now < state.gameplay.surge.activeUntil ? SURGE_MULT : 1;
+}
+
+function processSurge(now = Date.now()) {
+  const surge = state.gameplay.surge;
+  if (now >= surge.nextAt && now >= surge.activeUntil) {
+    surge.activeUntil = now + SURGE_DURATION_MS;
+    surge.nextAt = now + SURGE_INTERVAL_MIN_MS + Math.floor(Math.random() * SURGE_INTERVAL_VAR_MS);
+    surge.wasActive = true;
+    if (dom.caseMessage) dom.caseMessage.textContent = t("surge_started");
+  } else if (surge.wasActive && now >= surge.activeUntil) {
+    surge.wasActive = false;
+    if (dom.caseMessage) dom.caseMessage.textContent = t("surge_ended");
+  }
+}
+
+function grantOfflineEarnings(now = Date.now()) {
+  const elapsed = Math.max(0, now - (state.gameplay.lastSessionAt || now));
+  const capped = Math.min(elapsed, OFFLINE_EARN_CAP_MS);
+  const earned = Math.min(state.perSecond * (capped / 1000) * OFFLINE_EARN_RATE, OFFLINE_EARN_CAP_COINS);
+  if (earned > 0) {
+    state.coins += earned;
+    state.stats.totalEarned += earned;
+    if (dom.caseMessage) {
+      dom.caseMessage.textContent = t("offline_earned", { amount: format(earned) });
+    }
+  }
+  state.gameplay.lastSessionAt = now;
+}
+
+function getPrestigeCost(level = state.progress.prestigeLevel) {
+  return Math.floor(PRESTIGE_BASE_COST * Math.pow(PRESTIGE_COST_GROWTH, level));
+}
+
+function getPrestigeMultiplier(level = state.progress.prestigeLevel) {
+  return 1 + level * PRESTIGE_BONUS_PER_LEVEL;
+}
+
+function getPrestigeCritBonus(level = state.progress.prestigeLevel) {
+  return Math.min(PRESTIGE_CRIT_BONUS_MAX, level * PRESTIGE_CRIT_BONUS_PER_LEVEL);
+}
+
+function getPrestigeCaseDiscount(level = state.progress.prestigeLevel) {
+  return Math.min(PRESTIGE_CASE_DISCOUNT_MAX, level * PRESTIGE_CASE_DISCOUNT_PER_LEVEL);
+}
+
+function getCaseCost(baseCost) {
+  const discount = getPrestigeCaseDiscount();
+  return Math.max(1, Math.floor(baseCost * (1 - discount)));
+}
+
+function updateProgressMessage(text) {
+  if (dom.progressMessage) dom.progressMessage.textContent = text;
+}
+
+function prestigeReset() {
+  const cost = getPrestigeCost();
+  if (state.coins < cost) {
+    updateProgressMessage(t("progress_prestige_not_enough"));
+    return;
+  }
+  state.coins = 0;
+  for (const u of state.upgrades) u.owned = 0;
+  state.settings.music = "none";
+  musicAudio.pause();
+  musicAudio.src = "";
+  state.streak.count = 0;
+  state.streak.lastClickTs = 0;
+  state.gameplay.noCritClicks = 0;
+  state.gameplay.momentum = 0;
+  state.gameplay.surge.activeUntil = 0;
+  state.gameplay.surge.nextAt = Date.now() + SURGE_INTERVAL_MIN_MS;
+  state.gameplay.surge.wasActive = false;
+  state.golden.active = false;
+  if (dom.goldenBtn) dom.goldenBtn.classList.remove("is-active");
+  if (dom.caseMessage) dom.caseMessage.textContent = "";
+  state.progress.prestigeLevel += 1;
+  recalcRates();
+  updateProgressMessage(t("progress_prestige_done", { level: format(state.progress.prestigeLevel) }));
+  updateUIFull();
+  save();
+}
+
+function updateProgressLite() {
+  const prestigeLevel = state.progress.prestigeLevel;
+  const prestigeCost = getPrestigeCost(prestigeLevel);
+  const prestigeMult = getPrestigeMultiplier(prestigeLevel);
+  const critBonus = getPrestigeCritBonus(prestigeLevel);
+  const caseDiscount = getPrestigeCaseDiscount(prestigeLevel);
+  if (dom.prestigeLevelInfo) dom.prestigeLevelInfo.textContent = t("progress_prestige_level", { level: format(prestigeLevel) });
+  if (dom.prestigeBonusInfo) dom.prestigeBonusInfo.textContent = t("progress_prestige_bonus", { mult: prestigeMult.toFixed(2) });
+  if (dom.prestigeCritInfo) dom.prestigeCritInfo.textContent = t("progress_prestige_crit", { value: `${(critBonus * 100).toFixed(1)}%` });
+  if (dom.prestigeCaseInfo) dom.prestigeCaseInfo.textContent = t("progress_prestige_case", { value: `${Math.round(caseDiscount * 100)}%` });
+  if (dom.prestigeCostInfo) dom.prestigeCostInfo.textContent = t("progress_prestige_cost", { cost: format(prestigeCost) });
+  if (dom.prestigeBtn) dom.prestigeBtn.disabled = state.coins < prestigeCost;
+}
+
 function recalcRates() {
   let perClick = 1;
   let perSecond = 0;
@@ -1953,8 +2218,10 @@ function recalcRates() {
     }
   }
 
-  state.perClick = perClick * clickMult;
-  state.perSecond = perSecond * autoMult;
+  const mastery = getMasteryMultiplier();
+  const prestige = getPrestigeMultiplier();
+  state.perClick = perClick * clickMult * mastery * prestige;
+  state.perSecond = perSecond * autoMult * mastery * prestige;
 }
 
 function renderShop() {
@@ -2078,6 +2345,10 @@ function applyTheme() {
   root.setProperty("--bad", active.theme.bad);
 }
 
+function applyInterfaceStyle() {
+  document.body.classList.toggle("ui-modern", state.settings.uiStyle === "modern");
+}
+
 function renderSkins() {
   dom.skinList.innerHTML = "";
   for (const skin of state.skins) {
@@ -2133,19 +2404,77 @@ function renderCases() {
     const meta = document.createElement("div");
     meta.className = "shop-meta";
     meta.textContent = t(item.descKey);
+    const caseCost = getCaseCost(item.cost);
+    const badge = document.createElement("div");
+    badge.className = "badge";
+    badge.textContent = t("cost_label", { count: format(caseCost) });
+    left.append(title, meta, badge);
+
+    const button = document.createElement("button");
+    button.textContent = t("case_open");
+    button.dataset.cost = String(caseCost);
+    button.disabled = state.caseOpening || state.coins < caseCost;
+    button.addEventListener("click", () => openCase(item));
+
+    wrap.append(left, button);
+    dom.caseList.appendChild(wrap);
+  }
+}
+
+function applyMusic() {
+  const currentId = state.settings.music;
+  if (!currentId || currentId === "none") {
+    musicAudio.pause();
+    musicAudio.src = "";
+    return;
+  }
+  const track = state.musicTracks.find((m) => m.id === currentId && m.owned);
+  if (!track) {
+    musicAudio.pause();
+    musicAudio.src = "";
+    state.settings.music = "none";
+    return;
+  }
+  if (musicAudio.src && musicAudio.src.includes(track.path)) {
+    return;
+  }
+  musicAudio.src = track.path;
+  musicAudio.play().catch(() => {});
+}
+
+function renderMusicShop() {
+  if (!dom.musicList) return;
+  dom.musicList.innerHTML = "";
+  for (const item of state.musicTracks) {
+    const wrap = document.createElement("div");
+    wrap.className = "shop-item";
+
+    const left = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = t(item.nameKey);
+    const meta = document.createElement("div");
+    meta.className = "shop-meta";
+    meta.textContent = t(item.descKey);
     const badge = document.createElement("div");
     badge.className = "badge";
     badge.textContent = t("cost_label", { count: format(item.cost) });
     left.append(title, meta, badge);
 
     const button = document.createElement("button");
-    button.textContent = t("case_open");
-    button.dataset.cost = String(item.cost);
-    button.disabled = state.caseOpening || state.coins < item.cost;
-    button.addEventListener("click", () => openCase(item));
+    if (!item.owned) {
+      button.textContent = t("buy_button");
+      button.dataset.cost = String(item.cost);
+      button.disabled = state.coins < item.cost;
+      button.addEventListener("click", () => buyMusic(item));
+    } else {
+      const isPlaying = state.settings.music === item.id;
+      button.textContent = isPlaying ? t("music_playing") : t("music_play");
+      button.disabled = false;
+      button.addEventListener("click", () => equipMusic(item));
+    }
 
     wrap.append(left, button);
-    dom.caseList.appendChild(wrap);
+    dom.musicList.appendChild(wrap);
   }
 }
 
@@ -2157,63 +2486,89 @@ function addInventory(item) {
 function renderInventory() {
   if (!dom.inventoryList) return;
   dom.inventoryList.innerHTML = "";
+  const ownedMusic = state.musicTracks.filter((m) => m.owned);
   const ownedSkins = state.skins.filter((s) => s.owned);
-  if (ownedSkins.length === 0) {
+
+  if (dom.invThemesCount) dom.invThemesCount.textContent = format(ownedSkins.length);
+  if (dom.invMusicCount) dom.invMusicCount.textContent = format(ownedMusic.length);
+
+  const equippedSkin = state.skins.find((s) => s.id === state.settings.skin && s.owned);
+  const playingTrack = state.musicTracks.find((m) => m.id === state.settings.music && m.owned);
+  if (dom.invEquippedTheme) dom.invEquippedTheme.textContent = equippedSkin ? t(equippedSkin.nameKey) : t("inventory_none");
+  if (dom.invPlayingMusic) dom.invPlayingMusic.textContent = playingTrack ? t(playingTrack.nameKey) : t("inventory_none");
+
+  const allItems = [];
+  for (const skin of ownedSkins) {
+    allItems.push({
+      kind: "theme",
+      id: skin.id,
+      name: t(skin.nameKey),
+      desc: t(skin.descKey),
+      active: state.settings.skin === skin.id,
+      data: skin,
+    });
+  }
+  for (const track of ownedMusic) {
+    allItems.push({
+      kind: "music",
+      id: track.id,
+      name: t(track.nameKey),
+      desc: t(track.descKey),
+      active: state.settings.music === track.id,
+      data: track,
+    });
+  }
+
+  const tab = state.settings.inventoryTab || "all";
+  const search = (dom.inventorySearch?.value || "").trim().toLowerCase();
+  let items = allItems.filter((item) => {
+    if (tab === "themes" && item.kind !== "theme") return false;
+    if (tab === "music" && item.kind !== "music") return false;
+    if (!search) return true;
+    return item.name.toLowerCase().includes(search) || item.desc.toLowerCase().includes(search);
+  });
+
+  items = items.sort((a, b) => Number(b.active) - Number(a.active) || a.name.localeCompare(b.name));
+  if (items.length === 0) {
     const empty = document.createElement("div");
     empty.className = "shop-meta";
-    empty.textContent = t("inventory_empty");
+    empty.textContent = allItems.length === 0 ? t("inventory_empty") : t("inventory_empty_filtered");
     dom.inventoryList.appendChild(empty);
     return;
   }
-  for (const skin of ownedSkins) {
+
+  for (const item of items) {
     const wrap = document.createElement("div");
     wrap.className = "inventory-item";
     const left = document.createElement("div");
     const title = document.createElement("div");
-    title.textContent = `${t("inventory_skin")}: ${t(skin.nameKey)}`;
-    left.appendChild(title);
+    title.textContent = item.name;
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = `${item.kind === "theme" ? t("inventory_skin") : t("inventory_music_title")} | ${item.desc}`;
+    left.append(title, meta);
     wrap.appendChild(left);
+
     const btn = document.createElement("button");
-    const isEquipped = state.settings.skin === skin.id;
-    btn.textContent = isEquipped ? t("skin_equipped") : t("skin_equip");
-    btn.disabled = isEquipped;
-    btn.addEventListener("click", () => equipSkin(skin));
+    if (item.kind === "theme") {
+      const isEquipped = state.settings.skin === item.data.id;
+      btn.textContent = isEquipped ? t("skin_equipped") : t("skin_equip");
+      btn.disabled = isEquipped;
+      btn.addEventListener("click", () => equipSkin(item.data));
+    } else {
+      const isPlaying = state.settings.music === item.data.id;
+      btn.textContent = isPlaying ? t("music_stop") : t("music_play");
+      btn.disabled = false;
+      btn.addEventListener("click", () => {
+        state.settings.music = isPlaying ? "none" : item.data.id;
+        applyMusic();
+        updateUIFull();
+        save();
+      });
+    }
+
     wrap.appendChild(btn);
     dom.inventoryList.appendChild(wrap);
-  }
-}
-
-const achievements = [
-  { id: "ach_click_100", desc: "ach_click_100_desc", unlocked: () => state.stats.totalClicks >= 100 },
-  { id: "ach_click_1000", desc: "ach_click_1000_desc", unlocked: () => state.stats.totalClicks >= 1000 },
-  { id: "ach_coins_10k", desc: "ach_coins_10k_desc", unlocked: () => state.stats.totalEarned >= 10000 },
-  { id: "ach_auto_100", desc: "ach_auto_100_desc", unlocked: () => state.perSecond >= 100 },
-  { id: "ach_case_5", desc: "ach_case_5_desc", unlocked: () => state.stats.casesOpened >= 5 },
-  { id: "ach_theme_5", desc: "ach_theme_5_desc", unlocked: () => state.skins.filter((s) => s.owned).length >= 5 },
-  { id: "ach_streak_25", desc: "ach_streak_25_desc", unlocked: () => state.stats.bestStreak >= 25 },
-  { id: "ach_upgrade_20", desc: "ach_upgrade_20_desc", unlocked: () => state.stats.upgradesBought >= 20 },
-];
-
-function renderAchievements() {
-  if (!dom.achievementList) return;
-  dom.achievementList.innerHTML = "";
-  for (const ach of achievements) {
-    const wrap = document.createElement("div");
-    wrap.className = "achievement-item";
-    const isUnlocked = ach.unlocked();
-    if (!isUnlocked) wrap.classList.add("locked");
-    const left = document.createElement("div");
-    const title = document.createElement("div");
-    title.textContent = t(ach.id);
-    const meta = document.createElement("div");
-    meta.className = "shop-meta";
-    meta.textContent = t(ach.desc);
-    left.append(title, meta);
-    const badge = document.createElement("div");
-    badge.className = "badge";
-    badge.textContent = isUnlocked ? "✓" : "—";
-    wrap.append(left, badge);
-    dom.achievementList.appendChild(wrap);
   }
 }
 
@@ -2228,6 +2583,7 @@ function updateCounters() {
   dom.statUpgrades.textContent = format(state.stats.upgradesBought);
   dom.statCases.textContent = format(state.stats.casesOpened);
   dom.statBestStreak.textContent = format(state.stats.bestStreak);
+  updateProgressLite();
 }
 
 function updateButtonStates() {
@@ -2243,11 +2599,14 @@ function updateUIFull() {
   updateCounters();
   applyI18n();
   applyTheme();
+  applyInterfaceStyle();
   renderShop();
   renderSkins();
+  renderMusicShop();
   renderCases();
+  setActiveInventoryTab(state.settings.inventoryTab || "all");
   renderInventory();
-  renderAchievements();
+  applyMusic();
   updateButtonStates();
 }
 
@@ -2256,7 +2615,21 @@ function updateUILite() {
   updateButtonStates();
 }
 
+function animateClickButton() {
+  if (!dom.clickBtn) return;
+  if (state.settings.uiStyle !== "modern") return;
+  if (state.settings.reduceMotion) return;
+  dom.clickBtn.classList.remove("click-pop");
+  void dom.clickBtn.offsetWidth;
+  dom.clickBtn.classList.add("click-pop");
+  setTimeout(() => dom.clickBtn?.classList.remove("click-pop"), 470);
+}
+
 function clickOnce() {
+  playClickSound();
+  animateClickButton();
+  const nowTs = Date.now();
+  processSurge(nowTs);
   const now = Date.now();
   if (now - state.streak.lastClickTs <= STREAK_WINDOW_MS) {
     state.streak.count += 1;
@@ -2269,8 +2642,20 @@ function clickOnce() {
   }
 
   const streakBonus = 1 + Math.min(state.streak.count * 0.02, 0.5);
-  const isCrit = Math.random() < CRIT_CHANCE;
-  const earned = state.perClick * streakBonus * (isCrit ? CRIT_MULT : 1);
+  state.gameplay.momentum = Math.min(1, state.gameplay.momentum + MOMENTUM_GAIN);
+  const momentumBonus = 1 + Math.min(MOMENTUM_BONUS_MAX, state.gameplay.momentum * MOMENTUM_BONUS_MAX);
+  const critChance = Math.min(
+    CRIT_CHANCE_MAX,
+    CRIT_CHANCE_BASE + getPrestigeCritBonus() + state.gameplay.noCritClicks * CRIT_CHANCE_PITY_STEP
+  );
+  const isCrit = Math.random() < critChance;
+  if (isCrit) {
+    state.gameplay.noCritClicks = 0;
+  } else {
+    state.gameplay.noCritClicks += 1;
+  }
+  const surgeBonus = getSurgeMultiplier(nowTs);
+  const earned = state.perClick * streakBonus * momentumBonus * surgeBonus * (isCrit ? CRIT_MULT : 1);
   state.coins += earned;
   state.stats.totalEarned += earned;
   state.stats.totalClicks += 1;
@@ -2296,6 +2681,25 @@ function buySkin(skin) {
   state.coins -= skin.cost;
   skin.owned = true;
   state.settings.skin = skin.id;
+  updateUIFull();
+  save();
+}
+
+function buyMusic(track) {
+  if (track.owned) return;
+  if (state.coins < track.cost) return;
+  state.coins -= track.cost;
+  track.owned = true;
+  state.settings.music = track.id;
+  applyMusic();
+  updateUIFull();
+  save();
+}
+
+function equipMusic(track) {
+  if (!track.owned) return;
+  state.settings.music = state.settings.music === track.id ? "none" : track.id;
+  applyMusic();
   updateUIFull();
   save();
 }
@@ -2378,8 +2782,9 @@ function collectGolden() {
 }
 
 function openCase(item) {
+  const caseCost = getCaseCost(item.cost);
   if (state.caseOpening) return;
-  if (item.cost > state.coins) return;
+  if (caseCost > state.coins) return;
   state.caseOpening = true;
   updateButtonStates();
   if (dom.caseMessage) dom.caseMessage.textContent = "";
@@ -2394,7 +2799,7 @@ function openCase(item) {
     const reward = item.coins[Math.floor(Math.random() * item.coins.length)];
     const finalText = `+${format(reward)}`;
     runRoulette(rollItems, finalText, () => {
-      state.coins -= item.cost;
+      state.coins -= caseCost;
       state.coins += reward;
       state.stats.totalEarned += reward;
       state.stats.casesOpened += 1;
@@ -2433,7 +2838,7 @@ function openCase(item) {
     const chosenSkin = chosenId ? state.skins.find((s) => s.id === chosenId) : null;
     const finalText = gotNothing ? t("case_nothing") : (chosenSkin ? t(chosenSkin.nameKey) : chosenId);
     runRoulette(rollItems, finalText, () => {
-      state.coins -= item.cost;
+      state.coins -= caseCost;
       if (chosenSkin && chosenId) {
         chosenSkin.owned = true;
         addInventory({ type: "skin", skinId: chosenId });
@@ -2453,11 +2858,14 @@ function openCase(item) {
 
 function tick() {
   const now = Date.now();
+  processSurge(now);
   const delta = Math.min(1000, Math.max(0, now - state.stats.lastTick));
   state.stats.timePlayedMs += delta;
   state.stats.lastTick = now;
+  state.gameplay.momentum = Math.max(0, state.gameplay.momentum - MOMENTUM_DECAY_PER_SEC * (delta / 1000));
+  const surgeBonus = getSurgeMultiplier(now);
   if (state.perSecond > 0) {
-    const earned = state.perSecond / 10;
+    const earned = state.perSecond * (delta / 1000) * surgeBonus;
     state.coins += earned;
     state.stats.totalEarned += earned;
     updateUILite();
@@ -2473,10 +2881,13 @@ function buildSaveData() {
     coins: state.coins,
     upgrades: state.upgrades.map((u) => ({ id: u.id, owned: u.owned })),
     skins: state.skins.map((s) => ({ id: s.id, owned: s.owned })),
+    musicTracks: state.musicTracks.map((m) => ({ id: m.id, owned: m.owned })),
     settings: state.settings,
     activeTab: document.querySelector(".tab.is-active")?.dataset.tab || "play",
     activeShopTab: document.querySelector(".shop-tab.is-active")?.dataset.shopTab || "upgrades",
     stats: state.stats,
+    gameplay: state.gameplay,
+    progress: state.progress,
     inventory: state.inventory.filter((i) => i && i.type === "skin"),
   };
 }
@@ -2489,7 +2900,10 @@ function load() {
   const raw = localStorage.getItem("clicker_shop_save");
   const browserLang = (navigator.language || "en").toLowerCase();
   state.settings.language = browserLang.startsWith("ru") ? "ru" : "en";
-  if (!raw) return;
+  if (!raw) {
+    state.gameplay.lastSessionAt = Date.now();
+    return;
+  }
   try {
     const data = JSON.parse(raw);
     if (typeof data.coins === "number") state.coins = data.coins;
@@ -2500,8 +2914,14 @@ function load() {
       if (typeof data.settings.shortNumbers === "boolean") {
         state.settings.shortNumbers = data.settings.shortNumbers;
       }
+      if (data.settings.uiStyle === "classic" || data.settings.uiStyle === "modern") {
+        state.settings.uiStyle = data.settings.uiStyle;
+      }
       if (typeof data.settings.skin === "string") {
         state.settings.skin = data.settings.skin;
+      }
+      if (typeof data.settings.music === "string") {
+        state.settings.music = data.settings.music;
       }
       if (typeof data.settings.reduceMotion === "boolean") {
         state.settings.reduceMotion = data.settings.reduceMotion;
@@ -2515,11 +2935,31 @@ function load() {
       if (typeof data.settings.shopSort === "string") {
         state.settings.shopSort = data.settings.shopSort;
       }
+      if (data.settings.inventoryTab === "all" || data.settings.inventoryTab === "themes" || data.settings.inventoryTab === "music") {
+        state.settings.inventoryTab = data.settings.inventoryTab;
+      }
     }
     if (data.stats) {
       if (typeof data.stats.totalEarned === "number") state.stats.totalEarned = data.stats.totalEarned;
       if (typeof data.stats.timePlayedMs === "number") state.stats.timePlayedMs = data.stats.timePlayedMs;
       if (typeof data.stats.lastTick === "number") state.stats.lastTick = data.stats.lastTick;
+      if (typeof data.stats.totalClicks === "number") state.stats.totalClicks = data.stats.totalClicks;
+      if (typeof data.stats.upgradesBought === "number") state.stats.upgradesBought = data.stats.upgradesBought;
+      if (typeof data.stats.casesOpened === "number") state.stats.casesOpened = data.stats.casesOpened;
+      if (typeof data.stats.bestStreak === "number") state.stats.bestStreak = data.stats.bestStreak;
+    }
+    if (data.gameplay) {
+      if (typeof data.gameplay.noCritClicks === "number") state.gameplay.noCritClicks = data.gameplay.noCritClicks;
+      if (typeof data.gameplay.momentum === "number") state.gameplay.momentum = data.gameplay.momentum;
+      if (typeof data.gameplay.lastSessionAt === "number") state.gameplay.lastSessionAt = data.gameplay.lastSessionAt;
+      if (data.gameplay.surge) {
+        if (typeof data.gameplay.surge.activeUntil === "number") state.gameplay.surge.activeUntil = data.gameplay.surge.activeUntil;
+        if (typeof data.gameplay.surge.nextAt === "number") state.gameplay.surge.nextAt = data.gameplay.surge.nextAt;
+        if (typeof data.gameplay.surge.wasActive === "boolean") state.gameplay.surge.wasActive = data.gameplay.surge.wasActive;
+      }
+    }
+    if (data.progress) {
+      if (typeof data.progress.prestigeLevel === "number") state.progress.prestigeLevel = Math.max(0, data.progress.prestigeLevel);
     }
     if (Array.isArray(data.upgrades)) {
       for (const saved of data.upgrades) {
@@ -2532,6 +2972,14 @@ function load() {
     if (Array.isArray(data.skins)) {
       for (const saved of data.skins) {
         const match = state.skins.find((s) => s.id === saved.id);
+        if (match && typeof saved.owned === "boolean") {
+          match.owned = saved.owned;
+        }
+      }
+    }
+    if (Array.isArray(data.musicTracks)) {
+      for (const saved of data.musicTracks) {
+        const match = state.musicTracks.find((m) => m.id === saved.id);
         if (match && typeof saved.owned === "boolean") {
           match.owned = saved.owned;
         }
@@ -2551,6 +2999,7 @@ function load() {
       setActiveShopTab(data.activeShopTab);
     }
     recalcRates();
+    grantOfflineEarnings(Date.now());
   } catch {
     // ignore corrupted saves
   }
@@ -2561,7 +3010,13 @@ function reset() {
   state.coins = 0;
   for (const u of state.upgrades) u.owned = 0;
   for (const s of state.skins) s.owned = s.id === "classic";
+  for (const m of state.musicTracks) m.owned = false;
   state.settings.skin = "classic";
+  state.settings.music = "none";
+  state.settings.inventoryTab = "all";
+  if (dom.inventorySearch) dom.inventorySearch.value = "";
+  musicAudio.pause();
+  musicAudio.src = "";
   state.stats.totalEarned = 0;
   state.stats.timePlayedMs = 0;
   state.stats.lastTick = Date.now();
@@ -2571,6 +3026,13 @@ function reset() {
   state.stats.bestStreak = 0;
   state.streak.count = 0;
   state.streak.lastClickTs = 0;
+  state.gameplay.noCritClicks = 0;
+  state.gameplay.momentum = 0;
+  state.gameplay.lastSessionAt = Date.now();
+  state.gameplay.surge.activeUntil = 0;
+  state.gameplay.surge.nextAt = Date.now() + SURGE_INTERVAL_MIN_MS;
+  state.gameplay.surge.wasActive = false;
+  state.progress.prestigeLevel = 0;
   state.golden.active = false;
   if (dom.goldenBtn) dom.goldenBtn.classList.remove("is-active");
   state.inventory = [];
@@ -2582,6 +3044,7 @@ function reset() {
 
 function bindSettings() {
   dom.languageSelect.value = state.settings.language;
+  if (dom.uiStyleSelect) dom.uiStyleSelect.value = state.settings.uiStyle;
   dom.shortNumbers.checked = state.settings.shortNumbers;
   dom.reduceMotion.checked = state.settings.reduceMotion;
   dom.confirmReset.checked = state.settings.confirmReset;
@@ -2589,6 +3052,12 @@ function bindSettings() {
   dom.languageSelect.addEventListener("change", (e) => {
     state.settings.language = e.target.value === "ru" ? "ru" : "en";
     updateUIFull();
+    save();
+  });
+
+  dom.uiStyleSelect?.addEventListener("change", (e) => {
+    state.settings.uiStyle = e.target.value === "modern" ? "modern" : "classic";
+    applyInterfaceStyle();
     save();
   });
 
@@ -2632,13 +3101,15 @@ function bindSettings() {
 }
 
 function setActiveTab(tabName) {
+  const exists = dom.tabs.some((tab) => tab.dataset.tab === tabName);
+  const safeTab = exists ? tabName : "play";
   dom.tabs.forEach((tab) => {
-    const isActive = tab.dataset.tab === tabName;
+    const isActive = tab.dataset.tab === safeTab;
     tab.classList.toggle("is-active", isActive);
     tab.setAttribute("aria-selected", isActive ? "true" : "false");
   });
   dom.panels.forEach((panel) => {
-    panel.classList.toggle("is-active", panel.id === `tab-${tabName}`);
+    panel.classList.toggle("is-active", panel.id === `tab-${safeTab}`);
   });
 }
 
@@ -2697,6 +3168,36 @@ function bindShopControls() {
   });
 }
 
+function setActiveInventoryTab(tabName) {
+  const next = (tabName === "themes" || tabName === "music") ? tabName : "all";
+  state.settings.inventoryTab = next;
+  dom.inventoryTabs.forEach((tab) => {
+    const isActive = tab.dataset.invTab === next;
+    tab.classList.toggle("is-active", isActive);
+  });
+}
+
+function bindInventoryControls() {
+  setActiveInventoryTab(state.settings.inventoryTab || "all");
+  dom.inventoryTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      setActiveInventoryTab(tab.dataset.invTab);
+      updateUIFull();
+      save();
+    });
+  });
+
+  dom.inventorySearch?.addEventListener("input", () => {
+    updateUIFull();
+  });
+}
+
+function bindProgressControls() {
+  dom.prestigeBtn?.addEventListener("click", () => {
+    prestigeReset();
+  });
+}
+
 function init() {
   load();
   state.stats.lastTick = Date.now();
@@ -2704,6 +3205,8 @@ function init() {
   bindTabs();
   bindShopTabs();
   bindShopControls();
+  bindInventoryControls();
+  bindProgressControls();
   bindSettings();
   updateUIFull();
   dom.clickBtn.addEventListener("click", clickOnce);

@@ -472,6 +472,35 @@ h1 {
   color: var(--good);
 }
 
+.progress-panel {
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #2f2e44;
+}
+
+.progress-panel h2 {
+  margin-top: 0;
+}
+
+.progress-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.progress-card {
+  background: #1b1a28;
+  border-radius: 12px;
+  border: 1px solid #2f2e44;
+  padding: 12px 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.progress-card .reset {
+  justify-self: start;
+}
+
 .inventory-panel {
   background: var(--panel);
   border-radius: 16px;
@@ -486,6 +515,35 @@ h1 {
 .inventory-list {
   display: grid;
   gap: 10px;
+}
+
+.inventory-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.inventory-summary-item {
+  background: #1b1a28;
+  border-radius: 12px;
+  border: 1px solid #2f2e44;
+  padding: 10px 12px;
+}
+
+.inventory-summary-item .value {
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.inventory-controls {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.inventory-tabs {
+  margin: 0;
 }
 
 .inventory-item {
@@ -597,5 +655,597 @@ h1 {
   .click-btn {
     width: 160px;
     height: 160px;
+  }
+}
+
+/* Modern UI mode (optional, enabled from settings) */
+body.ui-modern {
+  font-family: "Manrope", "Segoe UI", "Segoe UI Variable", Tahoma, sans-serif;
+  background:
+    radial-gradient(900px 500px at 15% 10%, color-mix(in srgb, var(--accent) 25%, transparent) 0%, transparent 60%),
+    radial-gradient(1000px 600px at 85% 0%, color-mix(in srgb, var(--accent-2) 20%, transparent) 0%, transparent 62%),
+    linear-gradient(145deg, #0a0e17 0%, #0e1622 45%, #101a29 100%);
+  min-height: 100vh;
+}
+
+body.ui-modern::before,
+body.ui-modern::after {
+  content: "";
+  position: fixed;
+  inset: auto;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+  opacity: 0.3;
+  animation: modernOrbMove 14s ease-in-out infinite alternate;
+}
+
+body.ui-modern::before {
+  width: 280px;
+  height: 280px;
+  left: -80px;
+  top: 90px;
+  background: color-mix(in srgb, var(--accent) 50%, #fff 8%);
+}
+
+body.ui-modern::after {
+  width: 320px;
+  height: 320px;
+  right: -90px;
+  bottom: 110px;
+  background: color-mix(in srgb, var(--accent-2) 55%, #fff 8%);
+  animation-duration: 18s;
+}
+
+body.ui-modern .app {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  padding-top: 34px;
+  animation: modernFadeIn 0.8s ease-out;
+}
+
+body.ui-modern .top {
+  align-items: stretch;
+  gap: 16px;
+}
+
+body.ui-modern h1 {
+  font-size: clamp(28px, 4.2vw, 48px);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+body.ui-modern .subtitle {
+  max-width: 780px;
+  font-size: 15px;
+}
+
+body.ui-modern .stats {
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+body.ui-modern .stat,
+body.ui-modern .click-area,
+body.ui-modern .shop,
+body.ui-modern .settings,
+body.ui-modern .stats-panel,
+body.ui-modern .progress-panel,
+body.ui-modern .inventory-panel,
+body.ui-modern .info-panel {
+  background: linear-gradient(160deg, rgba(20, 28, 42, 0.82), rgba(18, 25, 38, 0.62));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+body.ui-modern .stat,
+body.ui-modern .stats-item,
+body.ui-modern .shop-item,
+body.ui-modern .setting,
+body.ui-modern .inventory-item,
+body.ui-modern .achievement-item,
+body.ui-modern .shop-category {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(155deg, rgba(26, 36, 52, 0.8), rgba(18, 27, 40, 0.62));
+}
+
+body.ui-modern .label,
+body.ui-modern .tool-title {
+  color: color-mix(in srgb, var(--text) 62%, #9eb6cf 38%);
+  letter-spacing: 0.09em;
+}
+
+body.ui-modern .value {
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.ui-modern .tabs,
+body.ui-modern .shop-tabs {
+  gap: 10px;
+}
+
+body.ui-modern .tab,
+body.ui-modern .shop-tab {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, rgba(38, 50, 71, 0.66), rgba(30, 41, 58, 0.58));
+  color: var(--text);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+body.ui-modern .tab:hover,
+body.ui-modern .shop-tab:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 60%, #fff 40%);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+}
+
+body.ui-modern .tab.is-active,
+body.ui-modern .shop-tab.is-active {
+  color: #0d1726;
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 25px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+body.ui-modern .click-area {
+  min-height: 420px;
+  border-radius: 24px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+body.ui-modern .click-area::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 20%, transparent) 0%, transparent 45%),
+    conic-gradient(from 220deg, transparent 0deg, rgba(255, 255, 255, 0.12) 60deg, transparent 120deg);
+  animation: modernArenaSpin 14s linear infinite;
+}
+
+body.ui-modern .click-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at center, #000 35%, transparent 82%);
+  opacity: 0.35;
+}
+
+body.ui-modern .click-btn {
+  width: 220px;
+  height: 220px;
+  position: relative;
+  overflow: visible;
+  border: 4px solid rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.5) 0%, transparent 30%),
+    conic-gradient(from 120deg, var(--accent), var(--accent-2), var(--accent));
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.42), 0 0 0 10px rgba(255, 255, 255, 0.04),
+    0 0 34px color-mix(in srgb, var(--accent) 35%, transparent);
+  animation: modernButtonFloat 3s ease-in-out infinite;
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.2s ease;
+}
+
+body.ui-modern .click-btn::before {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.32);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+body.ui-modern .click-btn::after {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 65%, #fff 35%);
+  opacity: 0;
+  transform: scale(0.82);
+  pointer-events: none;
+}
+
+body.ui-modern .click-btn:hover {
+  filter: saturate(1.08) brightness(1.05);
+}
+
+body.ui-modern .click-btn:active {
+  transform: scale(0.965);
+}
+
+body.ui-modern .click-btn.click-pop {
+  animation: modernClickPop 0.45s cubic-bezier(0.2, 0.9, 0.2, 1), modernButtonFloat 3s ease-in-out 0.45s infinite;
+}
+
+body.ui-modern .click-btn.click-pop::after {
+  animation: modernClickRing 0.45s ease-out forwards;
+}
+
+body.ui-modern .golden-btn {
+  width: 52px;
+  height: 52px;
+  box-shadow: 0 0 24px rgba(255, 191, 73, 0.45), 0 8px 24px rgba(0, 0, 0, 0.38);
+}
+
+body.ui-modern .shop h2,
+body.ui-modern .settings h2,
+body.ui-modern .stats-panel h2,
+body.ui-modern .progress-panel h2,
+body.ui-modern .inventory-panel h2,
+body.ui-modern .info-panel h2 {
+  font-size: clamp(22px, 2.8vw, 32px);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+body.ui-modern .shop-controls {
+  margin-bottom: 16px;
+}
+
+body.ui-modern .shop-search,
+body.ui-modern .shop-sort,
+body.ui-modern .save-text,
+body.ui-modern .setting select {
+  background: rgba(10, 14, 24, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.ui-modern .shop-item button,
+body.ui-modern .inventory-item button {
+  border: none;
+  color: #0d1726;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--accent) 36%, transparent);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+body.ui-modern .shop-item button:hover,
+body.ui-modern .inventory-item button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+body.ui-modern .shop-item button:disabled,
+body.ui-modern .inventory-item button:disabled {
+  color: #7a8896;
+  background: linear-gradient(180deg, #313c4c, #2a3442);
+  box-shadow: none;
+}
+
+body.ui-modern .case-animation {
+  background: radial-gradient(circle at center, rgba(20, 31, 48, 0.76), rgba(6, 10, 16, 0.95));
+  text-shadow: 0 0 25px color-mix(in srgb, var(--accent) 60%, transparent), 0 0 48px rgba(255, 255, 255, 0.14);
+}
+
+body.ui-modern .case-animation.is-active {
+  animation: casePulse 2.4s ease-in-out, modernFadeIn 0.25s ease-out;
+}
+
+body.ui-modern .footer .reset {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(20, 30, 46, 0.5);
+}
+
+@keyframes modernFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modernButtonFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes modernClickPop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.92);
+  }
+  75% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes modernClickRing {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.86);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+  }
+}
+
+@keyframes modernArenaSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes modernOrbMove {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(35px, -25px) scale(1.1);
+  }
+}
+
+@media (max-width: 900px) {
+  body.ui-modern .shop-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  body.ui-modern .app {
+    padding: 20px 14px 34px;
+  }
+
+  body.ui-modern .click-btn {
+    width: 180px;
+    height: 180px;
+  }
+
+  body.ui-modern .tabs .tab,
+  body.ui-modern .shop-tabs .shop-tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Extra modern revamp for all sections */
+body.ui-modern {
+  --ui-line: rgba(255, 255, 255, 0.14);
+  --ui-line-soft: rgba(255, 255, 255, 0.08);
+  --ui-card: linear-gradient(165deg, rgba(26, 37, 55, 0.84), rgba(15, 24, 38, 0.72));
+  --ui-card-alt: linear-gradient(165deg, rgba(23, 34, 50, 0.92), rgba(14, 23, 36, 0.78));
+}
+
+body.ui-modern .main {
+  gap: 16px;
+}
+
+body.ui-modern .top > div:first-child,
+body.ui-modern .stats {
+  border: 1px solid var(--ui-line-soft);
+  border-radius: 18px;
+  padding: 16px;
+  background: var(--ui-card-alt);
+  backdrop-filter: blur(8px);
+}
+
+body.ui-modern .tabs,
+body.ui-modern .shop-tabs {
+  padding: 8px;
+  border: 1px solid var(--ui-line-soft);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(20, 30, 45, 0.82), rgba(15, 24, 36, 0.68));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.ui-modern .tab-panel.is-active,
+body.ui-modern .shop-panel.is-active {
+  animation: modernPanelIn 0.36s ease;
+}
+
+body.ui-modern .shop,
+body.ui-modern .settings,
+body.ui-modern .stats-panel,
+body.ui-modern .progress-panel,
+body.ui-modern .inventory-panel,
+body.ui-modern .info-panel {
+  border-radius: 20px;
+}
+
+body.ui-modern .shop-controls {
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid var(--ui-line-soft);
+  background: rgba(9, 14, 24, 0.5);
+}
+
+body.ui-modern .shop-list,
+body.ui-modern .stats-list,
+body.ui-modern .settings-list,
+body.ui-modern .inventory-list,
+body.ui-modern .achievement-list {
+  gap: 12px;
+}
+
+body.ui-modern .progress-card {
+  border: 1px solid var(--ui-line);
+  background: var(--ui-card);
+}
+
+body.ui-modern .shop-category {
+  border: 1px solid var(--ui-line);
+  background: linear-gradient(165deg, rgba(24, 35, 52, 0.75), rgba(14, 23, 35, 0.55));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.ui-modern .shop-category-title {
+  color: color-mix(in srgb, var(--accent) 35%, var(--text) 65%);
+  letter-spacing: 0.08em;
+}
+
+body.ui-modern .shop-item,
+body.ui-modern .stats-item,
+body.ui-modern .setting,
+body.ui-modern .inventory-item,
+body.ui-modern .achievement-item {
+  position: relative;
+  overflow: hidden;
+}
+
+body.ui-modern .shop-item::before,
+body.ui-modern .stats-item::before,
+body.ui-modern .setting::before,
+body.ui-modern .inventory-item::before,
+body.ui-modern .achievement-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.08) 48%, transparent 100%);
+  transform: translateX(-120%);
+  transition: transform 0.45s ease;
+}
+
+body.ui-modern .shop-item:hover::before,
+body.ui-modern .stats-item:hover::before,
+body.ui-modern .setting:hover::before,
+body.ui-modern .inventory-item:hover::before,
+body.ui-modern .achievement-item:hover::before {
+  transform: translateX(120%);
+}
+
+body.ui-modern .shop-item,
+body.ui-modern .inventory-item,
+body.ui-modern .achievement-item {
+  border: 1px solid var(--ui-line);
+  background: var(--ui-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+body.ui-modern .shop-item:hover,
+body.ui-modern .inventory-item:hover,
+body.ui-modern .achievement-item:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 45%, #fff 55%);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+body.ui-modern .inventory-summary-item {
+  border: 1px solid var(--ui-line);
+  background: var(--ui-card);
+}
+
+body.ui-modern .inventory-controls {
+  border: 1px solid var(--ui-line-soft);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(10, 16, 26, 0.45);
+}
+
+body.ui-modern .stats-item {
+  border: 1px solid var(--ui-line);
+  background: var(--ui-card);
+}
+
+body.ui-modern .settings-tools,
+body.ui-modern .achievements {
+  border: 1px solid var(--ui-line-soft);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(10, 16, 26, 0.45);
+}
+
+body.ui-modern .save-text {
+  min-height: 92px;
+}
+
+body.ui-modern .case-message {
+  border: 1px solid var(--ui-line);
+  background: linear-gradient(170deg, rgba(15, 25, 39, 0.78), rgba(9, 15, 24, 0.65));
+  color: color-mix(in srgb, var(--text) 78%, #b6d0ea 22%);
+}
+
+body.ui-modern .badge {
+  color: color-mix(in srgb, var(--good) 72%, #d8fff0 28%);
+}
+
+body.ui-modern .footer {
+  margin-top: 18px;
+  padding: 10px 12px;
+  border: 1px solid var(--ui-line-soft);
+  border-radius: 14px;
+  background: rgba(11, 18, 29, 0.45);
+}
+
+body.ui-modern .tip {
+  color: color-mix(in srgb, var(--text) 60%, #9fb6cd 40%);
+}
+
+body.ui-modern .info-link {
+  color: color-mix(in srgb, var(--accent) 55%, #d9f1ff 45%);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+body.ui-modern .info-link:hover {
+  color: color-mix(in srgb, var(--accent-2) 65%, #fff 35%);
+  border-bottom-style: solid;
+}
+
+body.ui-modern ::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+body.ui-modern ::-webkit-scrollbar-track {
+  background: rgba(12, 18, 28, 0.8);
+}
+
+body.ui-modern ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 80%, #fff 20%), color-mix(in srgb, var(--accent-2) 82%, #fff 18%));
+  border-radius: 10px;
+}
+
+@keyframes modernPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  body.ui-modern .top > div:first-child,
+  body.ui-modern .stats {
+    width: 100%;
+  }
+
+  .inventory-summary {
+    grid-template-columns: 1fr;
   }
 }
