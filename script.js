@@ -440,7 +440,7 @@
       nameKey: "music_digital_name",
       descKey: "music_digital_desc",
       cost: 1000,
-      path: "Sounds/digital-dreams_89467.mp3",
+      path: "digital-dreams_89467.mp3",
       owned: false,
     },
     {
@@ -448,7 +448,7 @@
       nameKey: "music_echoes_name",
       descKey: "music_echoes_desc",
       cost: 850,
-      path: "Sounds/echoes-of-joy_89484.mp3",
+      path: "echoes-of-joy_89484.mp3",
       owned: false,
     },
     {
@@ -456,7 +456,7 @@
       nameKey: "music_euphoric_name",
       descKey: "music_euphoric_desc",
       cost: 1240,
-      path: "Sounds/euphoric-ascent_89538.mp3",
+      path: "euphoric-ascent_89538.mp3",
       owned: false,
     },
   ],
@@ -2016,7 +2016,7 @@ const PRESTIGE_CRIT_BONUS_PER_LEVEL = 0.012;
 const PRESTIGE_CRIT_BONUS_MAX = 0.25;
 const PRESTIGE_CASE_DISCOUNT_PER_LEVEL = 0.03;
 const PRESTIGE_CASE_DISCOUNT_MAX = 0.6;
-const clickSound = new Audio("Sounds/click.mp3");
+const clickSound = new Audio("click.mp3");
 clickSound.preload = "auto";
 const musicAudio = new Audio();
 musicAudio.loop = true;
